@@ -1,0 +1,10 @@
+.review-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+
+  border: solid black;
+}
+
+.review-item {
+  border: solid black;
+}

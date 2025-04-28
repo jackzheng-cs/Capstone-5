@@ -7,6 +7,8 @@ const app = express();
 const port = 3000;
 env.config();
 
+app.use(express.static("public"));
+
 const db = new pg.Client({
   user: process.env.PG_USER,
   host: process.env.PG_HOST,
@@ -14,14 +16,16 @@ const db = new pg.Client({
   password: process.env.PG_PASSWORD,
   port: process.env.PG_PORT,
 });
+db.connect();
 
-app.get("/", async (req, res) => {
-  try {
-    await db.connect();
-    console.log("DB is connected");
-  } catch (err) {
-    console.log("Error");
-  }
+app.get("/", (req, res) => {
+  res.send("Test");
+});
+
+app.get("/reviews", async (req, res) => {
+  const result = await db.query("SELECT * FROM reviews ");
+
+  res.render("reviews.ejs", { reviews: result.rows });
 });
 
 app.listen(port, () => {
